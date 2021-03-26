@@ -20,8 +20,6 @@ bool isSamePoint(A a, A b){
 }
 
 int main(){
-    ios_base :: sync_with_stdio(0);
-    cin.tie(0);
 
     int q, ra2, rb2, d2, rarb2;
     A a, b;
