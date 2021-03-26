@@ -1,2 +1,4 @@
 *.exe
 *.o
+0.cpp
+*.vscode
