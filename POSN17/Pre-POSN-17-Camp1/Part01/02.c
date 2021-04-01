@@ -1,6 +1,6 @@
 #include <stdio.h>
 
 int main(){
-    printf("Hello, world");
+    printf("Pattarapol\nNa Netra");
     return 0;
 }
