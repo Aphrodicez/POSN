@@ -1,6 +1,6 @@
 No Brain :
 ------------------
-A+B Problem\n
+A+B Problem<\t>
 Grading
 Min Max
 Matrix Addition
