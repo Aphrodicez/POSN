@@ -1,15 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+char s[210];
+
 int main(){
-    ios_base :: sync_with_stdio(0);
-    cin.tie(0);
     
     int k, delta, up = 0, down = 0, leftt = 0, rightt = 0, ans;
-    string s;
-    cin >> s;
-    cin >> k;
-    for(char c: s){
+    char c;
+    scanf(" %s", s);
+    scanf("%d", &k);
+    for(int i = 0; i < strlen(s); i++){
+        c = s[i];
         if(c == 'N')
             up++;
         else if(c == 'E')
@@ -40,7 +41,7 @@ int main(){
         k -= delta;
     }
     ans = abs(up - down) + abs(rightt - leftt) - k;
-    cout << ans * 2;
+    printf("%d\n", ans*2);
     return 0;
 }
 /*
