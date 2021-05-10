@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang    : CPP
-    Algo	: Euler Path
+    Algo	: Euler Graph
     Status	: Accepted
 */
 
