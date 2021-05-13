@@ -2,8 +2,8 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang    : CPP
-    Algo	: 
-    Status	: 
+    Algo	: Heap
+    Status	: Time Limit Exceeded
 */
 
 #include <bits/stdc++.h>
