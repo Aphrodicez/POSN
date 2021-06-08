@@ -33,7 +33,7 @@ const int d8j[] = {0, 1, 1, 1, 0, -1, -1, -1};
 const int N = 3e1 + 10;
 const int M = 2e5 + 10;
 
-struct A{
+struct GRAPH{
     int i, j;
 };
 
@@ -41,7 +41,7 @@ char a[N][N];
 
 int dis[N][N];
 
-queue <A> bfs;
+queue <GRAPH> bfs;
 
 void solve() {
     while(!bfs.empty())
@@ -77,9 +77,9 @@ void solve() {
         }
     }
     t -= dis[eni][enj];
-    if(t < 0 || dis[eni][enj]==-1){
+    if(t < 0 || dis[eni][enj] == -1) {
         cout << -1 << "\n";
-        return; 
+        return;
     }
     cout << min(t / 2 + dis[eni][enj] + 1, cnt) << "\n";
 }

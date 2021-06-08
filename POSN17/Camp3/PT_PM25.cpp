@@ -33,7 +33,7 @@ const int d8j[] = {0, 1, 1, 1, 0, -1, -1, -1};
 const int N = 1e3 + 10;
 const int M = 2e5 + 10;
 
-struct A{
+struct GRAPH{
     int i, j;
 };
 
@@ -41,17 +41,17 @@ char a[N][N];
 
 int dis[N][N];
 
-queue <A> bfs;
+queue <GRAPH> bfs;
 
 void solve() {
     while(!bfs.empty())
         bfs.pop();
+    memset(dis, -1, sizeof dis);
     int r, c;
     cin >> r >> c;
     int sti, stj, eni, enj;
     for(int i = 1; i <= r; i++){
         for(int j = 1; j <= c; j++){
-            dis[i][j] = 1e9;
             cin >> a[i][j];
             if(a[i][j] == 'S')
                 sti = i, stj = j;
@@ -72,24 +72,24 @@ void solve() {
                 continue;
             if(a[ii][jj] == '#')
                 continue;
-            if(dis[ii][jj] <= dis[i][j] + 1)
+            if(dis[ii][jj] != -1)
                 continue;
             dis[ii][jj] = dis[i][j] + 1;
             bfs.push({ii, jj});
         }
     }
-    if(dis[sti][stj] == 1e9){
+    if(dis[sti][stj] == -1){
         cout << -1 << "\n";
         return ;
     }
     int ans = 0;
     for(int i = 1; i <= r; i++){
         for(int j = 1; j <= c; j++){
-            if(isdigit(a[i][j])){
-                if(dis[i][j] <= dis[sti][stj]){
-                    ans += a[i][j] - '0';
-                }
-            }
+            if(!isdigit(a[i][j]) || dis[i][j] == -1)
+                 continue;
+            if(dis[i][j] > dis[sti][stj])
+                continue;
+            ans += a[i][j] - '0';
         }
     }
     cout << ans << "\n";

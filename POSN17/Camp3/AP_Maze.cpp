@@ -85,7 +85,7 @@ void solve() {
                 ii = i, jj = j;
                 while(1){
                     ii += di[state], jj += dj[state];
-                    if(ii < 1 || ii > r || jj < 1 || jj > c)
+                    if(ii < 1 || jj < 1 || ii > r || jj > c)
                         break;
                     if(a[k][ii][jj] != '.' && a[k][ii][jj] != '*')
                         break;
@@ -94,7 +94,7 @@ void solve() {
                 ii = i, jj = j;
                 while(1){
                     ii += di[state] * -1, jj += dj[state] * -1;
-                    if(ii < 1 || ii > r || jj < 1 || jj > c)
+                    if(ii < 1 || jj < 1 || ii > r || jj > c)
                         break;
                     if(a[k][ii][jj] != '.' && a[k][ii][jj] != '*')
                         break;
@@ -118,7 +118,7 @@ void solve() {
         for(int k = 0; k < 4; k++){
             int ii = i + d4i[k];
             int jj = j + d4j[k];
-            if(ii < 1 || ii > r || jj < 1 || jj > c)
+            if(ii < 1 || jj < 1 || ii > r || jj > c)
                 continue;
             if(a[nextstate%4][ii][jj] != '.' && a[nextstate%4][ii][jj] != 'S' && a[nextstate%4][ii][jj] != 'E')
                 continue;

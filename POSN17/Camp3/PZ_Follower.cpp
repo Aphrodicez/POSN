@@ -34,7 +34,7 @@ const int N = 1e2 + 10;
 const int M = 2e5 + 10;
 const int K = 1e3 + 100; /// 1023
 
-struct GRAPH{
+struct GRAPH {
     int u, w;
     bool operator < (const GRAPH &o) const{
         return w > o.w;
@@ -51,22 +51,26 @@ void solve() {
     while(!bfs.empty())
         bfs.pop();
     int n, m, st, en;
-    scanf("%d %d %d %d", &n, &m, &st, &en);
+    cin >> n >> m >> st >> en;
     memset(mark, 0, sizeof mark);
     for(int i = 1; i <= n; i++)
         g[i].clear();
     for(int i = 1; i <= m; i++){
         int u, v, w;
-        scanf("%d %d %d", &u, &v, &w);
+        cin >> u >> v >> w;
         g[u].pb({v, w});
         g[v].pb({u, w});
     }
     mark[0][st] = 1;
     bfs.push({st, 0});
+    int ans = 1023;
     while(!bfs.empty()){
         int u = bfs.front().u;
         int w = bfs.front().w;
         bfs.pop();
+        if(u == en){
+            ans = min(ans, w);
+        }
         for(auto x: g[u]){
             int nextw = w ^ x.w;
             if(mark[nextw][x.u])
@@ -75,18 +79,13 @@ void solve() {
             bfs.push({x.u, nextw});
         }
     }
-    for(int i = 0; i <= 1024; i++){
-        if(!mark[i][en])
-            continue;
-        printf("%d\n", i);
-        return ;
-    }
+    cout << ans << "\n";
 }
 
 int main() {
     setIO();
     int q;
-    scanf("%d", &q);
+    cin >> q;
     while(q--){
         solve();
     }
