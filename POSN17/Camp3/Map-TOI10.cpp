@@ -89,6 +89,7 @@ void solve() {
 }
 
 int main() {
+    setIO();
     solve();
     return 0;
 }
