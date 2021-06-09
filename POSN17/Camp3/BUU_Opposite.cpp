@@ -86,8 +86,8 @@ void solve() {
     memset(dis, -1, sizeof dis);
     int sti, stj, eni, enj;
     cin >> r >> c;
-    for(int i = 1; i <= r; i++){
-        for(int j = 1; j <= c; j++){
+    for(int i = 1; i <= r; i++) {
+        for(int j = 1; j <= c; j++) {
             cin >> a[i][j];
             if(a[i][j] == 'A')
                 sti = i, stj = j;
@@ -95,12 +95,12 @@ void solve() {
                 eni = i, enj = j;
         }
     }
-    for(int i = 1; i <= r; i++){
-        for(int j = 1; j <= c; j++){
+    for(int i = 1; i <= r; i++) {
+        for(int j = 1; j <= c; j++) {
             genShortestPath(i, j);
         }
     }
-    if(dis[sti][stj][eni][enj] == -1){
+    if(dis[sti][stj][eni][enj] == -1) {
         cout << -1 << " " << 0 << '\n';
         return ;
     }
@@ -115,42 +115,21 @@ void solve() {
         int bj = valid.front().bj;
         int w = valid.front().w;
         valid.pop();
-        for(int k = 0; k < 4; k++){
-            int nai = ai + d4i[k], naj = aj + d4j[k], nbi = bi + d4i[k] * -1, nbj = bj + d4j[k] * -1;
-            bool aValid = validMove(nai, naj);
-            bool bValid = validMove(nbi, nbj);
-            if(!(aValid || bValid))
+        if(mn > dis[ai][aj][bi][bj]) {
+            mn = dis[ai][aj][bi][bj];
+            walk = w;
+        }
+        for(int k = 0; k < 4; k++) {
+            int nai = ai + d4i[k], naj = aj + d4j[k];
+            int nbi = bi + d4i[k] * -1, nbj = bj + d4j[k] * -1;
+            if(!validMove(nai, naj))
+                nai = ai, naj = aj;
+            if(!validMove(nbi, nbj))
+                nbi = bi, nbj = bj;
+            if(isValid[nai][naj][nbi][nbj])
                 continue;
-            if(aValid && bValid) {
-                if(isValid[nai][naj][nbi][nbj])
-                    continue;
-                if(mn > dis[nai][naj][nbi][nbj]){
-                    mn = dis[nai][naj][nbi][nbj];
-                    walk = w + 1;
-                }
-                isValid[nai][naj][nbi][nbj] = 1;
-                valid.push({nai, naj, nbi, nbj, w + 1});
-            }
-            else if(aValid) {
-                if(isValid[nai][naj][bi][bj])
-                    continue;
-                if(mn > dis[nai][naj][bi][bj]){
-                    mn = dis[nai][naj][bi][bj];
-                    walk = w + 1;
-                }
-                isValid[nai][naj][bi][bj] = 1;
-                valid.push({nai, naj, bi, bj, w + 1});
-            }
-            else if(bValid) {
-                if(isValid[ai][aj][nbi][nbj])
-                    continue;
-                if(mn > dis[ai][aj][nbi][nbj]){
-                    mn = dis[ai][aj][nbi][nbj];
-                    walk = w + 1;
-                }
-                isValid[ai][aj][nbi][nbj] = 1;
-                valid.push({ai, aj, nbi, nbj, w + 1});
-            }
+            isValid[nai][naj][nbi][nbj] = 1;
+            valid.push({nai, naj, nbi, nbj, w + 1});
         }
     }
     cout << mn << " " << walk << '\n';
@@ -160,7 +139,7 @@ int main() {
     setIO();
     int q;
     cin >> q;
-    while(q--){
+    while(q--) {
         solve();
     }
     return 0;
