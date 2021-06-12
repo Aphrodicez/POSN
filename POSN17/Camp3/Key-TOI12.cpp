@@ -49,7 +49,7 @@ bool question() {
         for(int j = 0; j <= b.size(); j++) {
             if(!dp[i][j])
                 continue;
-            if(i < a.size() && s[i + j] == a[i]) 
+            if(i < a.size() && s[i + j] == a[i])
                 dp[i + 1][j] = 1;
             if(j < b.size() && s[i + j] == b[j])
                 dp[i][j + 1] = 1;
