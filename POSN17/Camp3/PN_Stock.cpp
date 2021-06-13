@@ -56,7 +56,7 @@ void solve() {
         r[i] = max(mx - a[i], r[i + 1]);
         mx = max(mx, a[i]);
     }
-    for(int i = 1; i < n; i++) {
+    for(int i = 1; i <= n; i++) {
         ans = max(ans, l[i] + r[i + 1]);
     }
     printf("%d\n", ans);
