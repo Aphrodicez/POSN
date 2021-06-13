@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Dynamic Programming [Quicksum 2D] + Laddersum
+    Algo	: Dynamic Programming [Quicksum 2D] + [Laddersum]
     Status	: Accepted
 */
 
