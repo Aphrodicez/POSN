@@ -59,7 +59,7 @@ void solve() {
     for(i64 i = 1; i <= n; i++) {
         cost[mp[li[i]]][mp[ri[i]]] = ci[i];
     }
-    for(i64 sz = 1; sz <= cnt; sz++) {
+    for(i64 sz = 2; sz <= cnt; sz++) {
         for(i64 start = 1; start + sz - 1 <= cnt; start++) {
             i64 l = start, r = start + sz - 1;
             i64 mx = 0;

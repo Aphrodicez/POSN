@@ -52,7 +52,6 @@ void solve() {
     for(int sz = 2; sz <= n; sz++) {
         for(int start = 1; start + sz - 1 <= n; start++) {
             int l = start, r = start + sz - 1;
-            int finished = 0;
             for(int mid = l; mid <= r - 1; mid++) {
                 for(int k = 0; k < 3; k++) {
                     if(dp[k][l][r])
