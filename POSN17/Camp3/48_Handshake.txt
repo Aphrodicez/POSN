@@ -1,0 +1,12 @@
+abs(xj - xi) <= (tj - ti) * v
+
+-v * (tj - ti) <= xj - xi <= (tj - ti) * v
+
+xi + v*ti <= xj + v*tj
+
+xi - v*ti >= xj - vt*j 
+
+v*ti - xi <= v*tj - xj [lis]
+
+x+ ก่อน >= x+ หลัง
+x- ก่อน <= x- หลัง
