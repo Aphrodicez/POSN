@@ -3,7 +3,7 @@
     School	: RYW
     Lang	: CPP
     Algo	: Permutation + Branch and Bound + Binary Search + Quicksum
-    Status	: Time Limit Exceeded [95]
+    Status	: Accepted
 */
 
 #include <bits/stdc++.h>
@@ -69,6 +69,11 @@ i64 check(int tc, int i, int aidx, int studentidx) {
             return mark[i][aidx][studentidx] = 0;
         }
     }
+    for(int j = i; j <= n; j++) {
+        for(int k = aidx; k >= 1; k--) {
+            mark[j][k][studentidx] = 1;
+        }
+    }
     return mark[i][aidx][studentidx] = 1;
 }
 
@@ -76,21 +81,18 @@ bool solve(int tc) {
     memset(mark, -1, sizeof mark);
     for(int i = 1; i <= n; i++) {
         cin >> group[i];
-        chooseA[i] = chooseGroup[i] = i;
+        chooseGroup[i] = i;
     }
     group[n + 1] = m + 1;
     do{
-        sort(chooseA + 1, chooseA + n + 1);
-        do{
-            bool ch = true;
-            for(int i = 1; i <= n; i++) {
-                ch = check(tc, i, chooseA[i], chooseGroup[i]);
-                if(!ch)
-                    break;
-            }
-            if(ch)
-                return ch;
-        }while (next_permutation(chooseA + 1, chooseA + n + 1));
+        bool ch = true;
+        for(int i = 1; i <= n; i++) {
+            ch = check(tc, i, chooseA[i], chooseGroup[i]);
+            if(!ch)
+                break;
+        }
+        if(ch)
+            return ch;
     }while (next_permutation(chooseGroup + 1, chooseGroup + n + 1));
     return false;
 }
@@ -103,6 +105,7 @@ int main() {
     sort(lift + 1, lift + n + 1);
     for(int i = 1; i <= n; i++) {
         scanf("%lld", &a[i]);
+        chooseA[i] = 1;
     }
     sort(a + 1, a + n + 1);
     for(int i = 1; i <= m; i++) {
