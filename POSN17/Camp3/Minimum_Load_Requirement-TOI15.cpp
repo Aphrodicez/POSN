@@ -3,7 +3,7 @@
     School	: RYW
     Lang	: CPP
     Algo	: Permutation + Branch and Bound + Binary Search + Quicksum
-    Status	: Accepted
+    Status	: Time Limit Exceeded [95]
 */
 
 #include <bits/stdc++.h>
@@ -39,40 +39,59 @@ const int M = 1e7 + 10;
 
 i64 n, m, q;
 
-i64 lift[N], a[N], t[N], group[N], qs[M];
+i64 lift[N], a[N], t[N], group[N], chooseA[N], chooseGroup[N], qs[M];
 
-bool check(int tc, int i, int l, int r) {
-    i64 sum = qs[l - 1];
+i64 mark[N][N][N];
+
+i64 check(int tc, int i, int aidx, int studentidx) {
+    if(mark[i][aidx][studentidx] != -1)
+        return mark[i][aidx][studentidx];
     i64 cnt = 0;
+    i64 l = group[studentidx], r = group[studentidx + 1];
     while(l < r) {
-        int nextl = upper_bound(qs + l, qs + r, sum + lift[i] - a[i]) - qs;
-        if(l == nextl)
-            return false;
+        int nextl = upper_bound(qs + l, qs + r, qs[l - 1] + lift[i] - a[aidx]) - qs;
+        if(l == nextl) {
+            for(int j = i; j >= 1; j--){
+                for(int k = aidx; k <= n; k++){
+                    mark[j][k][studentidx] = 0;
+                }
+            }
+            return mark[i][aidx][studentidx] = 0;
+        }
         l = nextl;
-        sum = qs[nextl - 1];
         cnt++;
-        if(cnt > t[tc])
-            return false;
+        if(cnt > t[tc]) {
+            for(int j = i; j >= 1; j--){
+                for(int k = aidx; k <= n; k++){
+                    mark[j][k][studentidx] = 0;
+                }
+            }
+            return mark[i][aidx][studentidx] = 0;
+        }
     }
-    return true;
+    return mark[i][aidx][studentidx] = 1;
 }
 
 bool solve(int tc) {
-    sort(a + 1, a + n + 1);
+    memset(mark, -1, sizeof mark);
     for(int i = 1; i <= n; i++) {
         cin >> group[i];
+        chooseA[i] = chooseGroup[i] = i;
     }
-    group[n + 1] = m;
+    group[n + 1] = m + 1;
     do{
-        bool ch = true;
-        for(int i = 1; i <= n; i++) {
-            ch = check(tc, i, group[i], group[i + 1] - 1);
-            if(!ch)
-                break;
-        }
-        if(ch)
-            return ch;
-    }while (next_permutation(a + 1, a + n + 1));
+        sort(chooseA + 1, chooseA + n + 1);
+        do{
+            bool ch = true;
+            for(int i = 1; i <= n; i++) {
+                ch = check(tc, i, chooseA[i], chooseGroup[i]);
+                if(!ch)
+                    break;
+            }
+            if(ch)
+                return ch;
+        }while (next_permutation(chooseA + 1, chooseA + n + 1));
+    }while (next_permutation(chooseGroup + 1, chooseGroup + n + 1));
     return false;
 }
 
@@ -85,6 +104,7 @@ int main() {
     for(int i = 1; i <= n; i++) {
         scanf("%lld", &a[i]);
     }
+    sort(a + 1, a + n + 1);
     for(int i = 1; i <= m; i++) {
         scanf("%lld", &qs[i]);
         qs[i] += qs[i - 1];
