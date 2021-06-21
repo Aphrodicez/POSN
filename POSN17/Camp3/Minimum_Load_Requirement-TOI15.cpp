@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Permutation + Branch and Bound + Binary Search + Quicksum
+    Algo	: Permutation + Branch and Bound + Binary Search + Quicksum + Greedy Algorithm
     Status	: Accepted
 */
 
@@ -37,88 +37,66 @@ struct GRAPH {
 const int N = 1e1 + 10;
 const int M = 1e7 + 10;
 
-i64 n, m, q;
+int n, m, q;
 
-i64 lift[N], a[N], t[N], group[N], chooseA[N], chooseGroup[N], qs[M];
+int lift[N], a[N], t[N], group[N], qs[M];
 
-i64 mark[N][N][N];
-
-i64 check(int tc, int i, int aidx, int studentidx) {
-    if(mark[i][aidx][studentidx] != -1)
-        return mark[i][aidx][studentidx];
-    i64 cnt = 0;
-    i64 l = group[studentidx], r = group[studentidx + 1];
-    while(l < r) {
-        int nextl = upper_bound(qs + l, qs + r, qs[l - 1] + lift[i] - a[aidx]) - qs;
-        if(l == nextl) {
-            for(int j = i; j >= 1; j--){
-                for(int k = aidx; k <= n; k++){
-                    mark[j][k][studentidx] = 0;
-                }
+bool check(int timeLimit) {
+    bool usedLift[N];
+    memset(usedLift, false, sizeof usedLift);
+	for(int i = 1, j; i <= n; i++) {
+		for(j = 1; j <= n; j++) {
+			if(usedLift[j])
+                continue;
+			int lb = group[i], rb = group[i + 1];
+            int cnt = 0;
+            bool ch = true;
+			while(lb < rb && ch) {
+				cnt++;
+				int nextl = upper_bound(qs + lb, qs + rb, lift[j] - a[i] + qs[lb - 1]) - qs;
+				if(nextl == lb) 
+                    ch = false;
+				lb = nextl;
+			}
+			if(ch && cnt <= timeLimit) {
+                usedLift[j] = true;
+                break;
             }
-            return mark[i][aidx][studentidx] = 0;
-        }
-        l = nextl;
-        cnt++;
-        if(cnt > t[tc]) {
-            for(int j = i; j >= 1; j--){
-                for(int k = aidx; k <= n; k++){
-                    mark[j][k][studentidx] = 0;
-                }
-            }
-            return mark[i][aidx][studentidx] = 0;
-        }
-    }
-    for(int j = i; j <= n; j++) {
-        for(int k = aidx; k >= 1; k--) {
-            mark[j][k][studentidx] = 1;
-        }
-    }
-    return mark[i][aidx][studentidx] = 1;
+		}
+		if(j == n + 1)
+            return false;
+	}
+	return true;
 }
 
 bool solve(int tc) {
-    memset(mark, -1, sizeof mark);
     for(int i = 1; i <= n; i++) {
         cin >> group[i];
-        chooseGroup[i] = i;
     }
     group[n + 1] = m + 1;
-    do{
-        bool ch = true;
-        for(int i = 1; i <= n; i++) {
-            ch = check(tc, i, chooseA[i], chooseGroup[i]);
-            if(!ch)
-                break;
-        }
-        if(ch)
-            return ch;
-    }while (next_permutation(chooseGroup + 1, chooseGroup + n + 1));
-    return false;
+	do {
+		if(check(t[tc]))
+            return true;
+	}while(next_permutation(a + 1, a + n + 1));
+	return false;
 }
 
 int main() {
-    scanf("%lld %lld %lld", &n, &m, &q);
-    for(int i = 1; i <= n; i++) {
-        scanf("%lld", &lift[i]);
-    }
-    sort(lift + 1, lift + n + 1);
-    for(int i = 1; i <= n; i++) {
-        scanf("%lld", &a[i]);
-        chooseA[i] = 1;
-    }
-    sort(a + 1, a + n + 1);
-    for(int i = 1; i <= m; i++) {
-        scanf("%lld", &qs[i]);
+    setIO();
+    cin >> n >> m >> q;
+	for(int i = 1; i <= n; i++)
+		cin >> lift[i];
+	for(int i = 1; i <= n; i++)
+		cin >> a[i];
+	for(int i = 1; i <= m; i++) {
+		cin >> qs[i];
         qs[i] += qs[i - 1];
     }
-    for(int i = 1; i <= q; i++) {
-        scanf("%lld", &t[i]);
-    }
-    for(int i = 1; i <= q; i++) {
-        printf(solve(i) ? "P" : "F");
-        printf("\n");
-    }
+	for(int i = 1; i <= q; i++)
+		cin >> t[i];
+	sort(lift + 1, lift + n + 1);
+	for(int i = 1; i <= q; i++)
+		cout << (solve(i) ? "P" : "F") << "\n";
     return 0;
 }
 
