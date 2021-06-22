@@ -2,8 +2,8 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: 
-    Status	: Rejected
+    Algo	: Dijkstra's Algorithm Kth State
+    Status	: Accepted
 */
 
 #include <bits/stdc++.h>
@@ -31,7 +31,7 @@ const int d8i[] = {-1, -1, 0, 1, 1, 1, 0, -1};
 const int d8j[] = {0, 1, 1, 1, 0, -1, -1, -1};
 
 struct GRAPH {
-    int u, w;
+    int u, w, edgeIdx;
     bool operator < (const GRAPH &o) const {
         return w > o.w;
     }
@@ -42,15 +42,18 @@ const int M = 2e5 + 10;
 
 vector <GRAPH> g[N];
 
-int entry[N], dis[N];
-
 priority_queue <GRAPH> dijk;
 
+int dis[N];
+
+vector <int> peattRoute;
+map <int, pair <int, int>> peattEdge;
+
 void solve() {
+    peattRoute.clear();
+    peattEdge.clear();
     while(!dijk.empty())
         dijk.pop();
-    memset(entry, -1, sizeof entry);
-    vector <int> peattRoute;
     int n, m;
     cin >> n >> m;
     for(int i = 1; i <= n; i++) {
@@ -66,8 +69,8 @@ void solve() {
     }
     for(int i = 1; i <= m; i++) {
         cin >> u >> v >> w;
-        g[u].push_back({v, w});
-        g[v].push_back({u, w});
+        g[u].push_back({v, w, i});
+        g[v].push_back({u, w, i});
     }
     dijk.push({peattRoute[0], 0});
     int i = 0;
@@ -76,14 +79,12 @@ void solve() {
         int w = dijk.top().w;
         dijk.pop();
         if(i == peattRoute.size() - 1) {
-            entry[u] = w;
             break;
         }
         for(auto x: g[u]) {
             if(x.u != peattRoute[i + 1])
                 continue;
-            entry[u] = w;
-            //cout << "PEATT" << u << " " << x.u << " " << entry[u] << "\n";
+            peattEdge[x.edgeIdx] = make_pair(w, w + x.w);
             dijk.push({x.u, w + x.w});
             i++;
             break;
@@ -95,18 +96,15 @@ void solve() {
         int u = dijk.top().u;
         int w = dijk.top().w;
         dijk.pop();
-        /*if(u == en) {
+        if(u == en) {
             cout << w - startTime << "\n";
             return ;
-        }*/
+        }
         for(auto x: g[u]) {
             int nextw = w + x.w;
-            if(entry[u] != -1 && entry[x.u] != -1) {
-                int nowentry = min(entry[u], entry[x.u]);
-                int nextentry = max(entry[u], entry[x.u]);
-                if(w >= nowentry && w < nextentry) {
-                    nextw = nextentry + x.w;
-                }
+            if(peattEdge.find(x.edgeIdx) != peattEdge.end()) {
+                if(w >= peattEdge[x.edgeIdx].first && w < peattEdge[x.edgeIdx].second)
+                    nextw = peattEdge[x.edgeIdx].second + x.w;
             }
             if(dis[x.u] <= nextw)
                 continue;
@@ -114,7 +112,6 @@ void solve() {
             dijk.push({x.u, nextw});
         }
     }
-    cout << dis[en] - startTime << "\n";
 }
 
 int main() {
