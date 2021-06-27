@@ -2,8 +2,8 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Math
-    Status	: Time Limit Exceeded [50]
+    Algo	: Dynamic Programming
+    Status	: Accepted
 */
 
 #include <bits/stdc++.h>
@@ -34,30 +34,38 @@ struct GRAPH {
     
 };
 
-const int N = 1e9 + 10;
+const int N = 262144 + 1;
 const int M = 2e5 + 10;
+const int K = 41 + 19; /// K + log(k)
 
-set <long long> mset;
-
-vector <long long> vec;
+int dp[K][N];
 
 void solve() {
-    i64 l, r;
-    cin >> l >> r;
-    cout << upper_bound(all(vec), r) - lower_bound(all(vec), l) << "\n";
+    memset(dp, 0, sizeof dp);
+    int n, num;
+    cin >> n;
+    int ans = 0;
+    for(int i = 1; i <= n; i++) {
+        cin >> num;
+        dp[num][i] = i;
+        ans = max(ans, num);
+        int j = i - 1;
+        while(j > 0) {
+            if(!dp[num][j])
+                break;
+            dp[num + 1][i] = dp[num][j];
+            j = dp[num][j] - 1; 
+            num++;
+            ans = max(ans, num);
+        }
+    }
+    cout << ans << "\n";
 }
 
 int main() {
     setIO();
-    i64 n, q;
-    cin >> n >> q;
-    for(i64 i = 1; i <= sqrt(n); i++) {
-        mset.insert(i * i);
-        mset.insert(2 * i * i);
-    }
-    for(auto x : mset) {
-        vec.push_back(x);
-    }
+    int q;
+    cin >> q;
     while(q--) {
         solve();
     }
@@ -69,8 +77,9 @@ void setIO() {
     cin.tie(0);
 }
 /*
-7 3
-1 2
-4 7
-3 5
+2
+4
+1 1 1 2
+4
+0 1 2 3
 */
