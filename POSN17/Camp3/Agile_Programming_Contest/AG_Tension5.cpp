@@ -38,25 +38,27 @@ const int N = 262144 + 1;
 const int M = 2e5 + 10;
 const int K = 41 + 19; /// K + log(k)
 
-int dp[K][N];
+int a[N], dp[2][N];
 
 void solve() {
     memset(dp, 0, sizeof dp);
-    int n, num;
+    int n;
     cin >> n;
     int ans = 0;
     for(int i = 1; i <= n; i++) {
-        cin >> num;
-        dp[num][i] = i;
-        ans = max(ans, num);
-        int j = i - 1;
-        while(j > 0) {
-            if(!dp[num][j])
-                break;
-            dp[num + 1][i] = dp[num][j];
-            j = dp[num][j] - 1; 
-            num++;
-            ans = max(ans, num);
+        cin >> a[i];
+        ans = max(ans, a[i]);
+    }
+    for(int state = 0; state <= K; state++) {
+        int laststate = state + 1;
+        for(int i = n; i >= 1; i--) {
+            dp[state % 2][i] = 0;
+            if(state == a[i])
+                dp[state % 2][i] = i + 1;
+            if(!dp[laststate % 2][i] || !dp[laststate % 2][dp[laststate % 2][i]])
+                continue;
+            dp[state % 2][i] = dp[laststate % 2][dp[laststate % 2][i]];
+            ans = max(ans, state);
         }
     }
     cout << ans << "\n";

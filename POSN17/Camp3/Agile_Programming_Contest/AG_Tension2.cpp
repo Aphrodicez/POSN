@@ -97,7 +97,6 @@ void solve() {
     }
     sort(increase + 1, increase + n + 1);
     sort(decrease + 1, decrease + n + 1);
-    bool ch = true;
     i64 componentSum = 0;
     for(i64 i = 1; i <= n; i++) {
         componentSum += max(0ll, increase[i].val - decrease[i].val);        
