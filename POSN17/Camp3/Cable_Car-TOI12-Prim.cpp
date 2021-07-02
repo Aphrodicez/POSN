@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Maximum Spanning Tree [Prim] + Compress Number
+    Algo	: Maximum Spanning Tree [Prim]
     Status	: Accepted
 */
 
@@ -31,17 +31,14 @@ const int d8i[] = {-1, -1, 0, 1, 1, 1, 0, -1};
 const int d8j[] = {0, 1, 1, 1, 0, -1, -1, -1};
 
 struct GRAPH {
-    int u;
-    i64 w;
+    int u, w;
     bool operator < (const GRAPH &o) const {
         return w < o.w;
     }
 };
 
-const int N = 5e4 + 10;
+const int N = 2500 + 10;
 const int M = 2e5 + 10;
-
-unordered_map <int, int> mapp;
 
 vector <GRAPH> g[N];
 
@@ -50,52 +47,42 @@ priority_queue <GRAPH> pq;
 bool visited[N];
 
 void solve() {
-    while(!pq.empty())
-        pq.pop();
-    mapp.clear();
-    memset(visited, false, sizeof visited);
+    memset(visited, false, sizeof (visited));
     int n, m;
     cin >> n >> m;
-    int u, v;
-    i64 w;
-    i64 ans = 0;
-    for(int i = 1; i <= n; i++) {
-        cin >> u;
-        mapp[u] = i;
-        g[i].clear();
-    }
+    int u, v, w;
     for(int i = 1; i <= m; i++) {
         cin >> u >> v >> w;
-        g[mapp[u]].push_back({mapp[v], w});
-        g[mapp[v]].push_back({mapp[u], w});
-        ans += w;
+        g[u].push_back({v, w - 1});
+        g[v].push_back({u, w - 1});
     }
-    u = 1;
-    pq.push({u, 0});
+    int st, en, people;
+    cin >> st >> en >> people;
+    int chooseEdge = 1e9;
+    pq.push({st, (int)1e9});
     while(!pq.empty()) {
         int u = pq.top().u;
-        i64 w = pq.top().w;
+        int w = pq.top().w;
         pq.pop();
         if(visited[u])
             continue;
         visited[u] = true;
-        ans -= w;
+        chooseEdge = min(chooseEdge, w);
+        if(visited[en])
+            break;
         for(auto x: g[u]) {
             if(visited[x.u])
                 continue;
             pq.push({x.u, x.w});
         }
     }
+    int ans = people / chooseEdge + (people % chooseEdge != 0);
     cout << ans << "\n";
 }
 
 int main() {
     setIO();
-    int q;
-    cin >> q;
-    while(q--) {
-        solve();
-    }
+    solve();
     return 0;
 }
 
@@ -104,37 +91,16 @@ void setIO() {
     cin.tie(0);
 }
 /*
-2
-8 10
-1 2 3 4 5 6 7 8
-1 2 3
-1 5 5
-2 3 4
-2 6 3
-3 4 2
-3 7 5
-4 8 5
-5 6 2
-6 7 7
-7 8 3
-14 18
-5 11 13 0 3 8 6 2 12 14 1 9 10 4 
-5 0 2
-5 6 7
-5 10 7
-11 6 5
-11 10 9
-11 12 4
-13 14 3
-13 8 5
-13 12 6
-0 1 7
-3 2 7
-3 8 1
-3 4 1
-8 9 1
-6 1 7
-2 1 9
-14 9 1
-9 4 3
+7 10
+1 2 30
+1 3 15
+1 4 10
+2 4 25
+2 5 60
+3 4 40
+4 7 35
+3 6 20
+5 7 20
+7 6 30
+1 7 99
 */

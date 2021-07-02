@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Maximum Spanning Tree [Prim] + Compress Number
+    Algo	: Maximum Spanning Tree [Kruskal] + Compress Number
     Status	: Accepted
 */
 
@@ -31,7 +31,7 @@ const int d8i[] = {-1, -1, 0, 1, 1, 1, 0, -1};
 const int d8j[] = {0, 1, 1, 1, 0, -1, -1, -1};
 
 struct GRAPH {
-    int u;
+    int u, v;
     i64 w;
     bool operator < (const GRAPH &o) const {
         return w < o.w;
@@ -41,19 +41,22 @@ struct GRAPH {
 const int N = 5e4 + 10;
 const int M = 2e5 + 10;
 
-unordered_map <int, int> mapp;
+int pa[N];
 
-vector <GRAPH> g[N];
+unordered_map <int, int> mapp;
 
 priority_queue <GRAPH> pq;
 
-bool visited[N];
+int find_root(int i) {
+    if(pa[i] == i)
+        return i;
+    return pa[i] = find_root(pa[i]);
+}
 
 void solve() {
     while(!pq.empty())
         pq.pop();
     mapp.clear();
-    memset(visited, false, sizeof visited);
     int n, m;
     cin >> n >> m;
     int u, v;
@@ -62,29 +65,27 @@ void solve() {
     for(int i = 1; i <= n; i++) {
         cin >> u;
         mapp[u] = i;
-        g[i].clear();
+        pa[i] = i;
     }
     for(int i = 1; i <= m; i++) {
         cin >> u >> v >> w;
-        g[mapp[u]].push_back({mapp[v], w});
-        g[mapp[v]].push_back({mapp[u], w});
+        u = mapp[u];
+        v = mapp[v];
+        pq.push({u, v, w});
+        pq.push({v, u, w});
         ans += w;
     }
-    u = 1;
-    pq.push({u, 0});
     while(!pq.empty()) {
         int u = pq.top().u;
+        int v = pq.top().v;
         i64 w = pq.top().w;
         pq.pop();
-        if(visited[u])
+        int ru = find_root(u);
+        int rv = find_root(v);
+        if(ru == rv)
             continue;
-        visited[u] = true;
+        pa[rv] = ru;
         ans -= w;
-        for(auto x: g[u]) {
-            if(visited[x.u])
-                continue;
-            pq.push({x.u, x.w});
-        }
     }
     cout << ans << "\n";
 }
