@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Minimum Spanning Tree [Prim] + Greedy Algorithm + Dynamic Programming + Binary Search
+    Algo	: Minimum Spanning Tree [Kruskal] + Greedy Algorithm + Dynamic Programming + Binary Search
     Status	: Accepted
 */
 
@@ -31,7 +31,7 @@ const int d8i[] = {-1, -1, 0, 1, 1, 1, 0, -1};
 const int d8j[] = {0, 1, 1, 1, 0, -1, -1, -1};
 
 struct GRAPH {
-    int u;
+    int u, v;
     i64 w;
     bool operator < (const GRAPH &o) const {
         return w > o.w;
@@ -41,26 +41,30 @@ struct GRAPH {
 const int N = 3e3 + 10;
 const int M = 2e5 + 10;
 
-vector <GRAPH> g[N];
-
 vector <pair <int, int>> cost;
 
 priority_queue <GRAPH> pq;
 
-bool visited[N];
+int pa[N];
+
+int find_root(int u) {
+    if(pa[u] == u)
+        return u;
+    return pa[u] = find_root(pa[u]);
+}
 
 void solve() {
-    memset(visited, false, sizeof (visited));
     int n, m;
     cin >> n >> m;
+    for(int i = 0; i <= n - 1; i++)
+        pa[i] = i;
     int u, v, state;
     i64 w;
     for(int i = 1; i <= m; i++) {
         cin >> u >> v >> w >> state;
         if(state)
             w = 0;
-        g[u].push_back({v, w});
-        g[v].push_back({u, w});
+        pq.push({u, v, w});
     }
     int q;
     cin >> q;
@@ -74,20 +78,16 @@ void solve() {
         cost[i - 1].second = min(cost[i].second, cost[i - 1].second);
     }
     i64 ans = 0;
-    u = 0;
-    pq.push({u, 0});
     while(!pq.empty()) {
         int u = pq.top().u;
+        int v = pq.top().v;
         i64 w = pq.top().w;
         pq.pop();
-        if(visited[u])
+        int ru = find_root(u);
+        int rv = find_root(v);
+        if(ru == rv)
             continue;
-        visited[u] = true;        
-        for(auto x: g[u]) {
-            if(visited[x.u])
-                continue;
-            pq.push({x.u, x.w});
-        }
+        pa[rv] = ru;
         if(!w)
             continue;
         int l = 0, r = cost.size() - 1;
@@ -99,7 +99,6 @@ void solve() {
                 r = mid;
         }
         ans += cost[l].second;
-
     }
     cout << ans << "\n";
 }
