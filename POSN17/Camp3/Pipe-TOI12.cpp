@@ -35,7 +35,7 @@ struct GRAPH {
 
 };
 
-const int N = 15000 + 10; 
+const int N = 15e3 + 10; 
 const int M = 1e3 + 10;
 
 int x[N], y[N], minEdge[N];
