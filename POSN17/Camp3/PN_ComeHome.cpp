@@ -59,18 +59,6 @@ void solve() {
         cin >> u >> v;
         int ru = find_root(u);
         int rv = find_root(v);
-        if(!visited[u]) {
-            visited[u] = true;
-            pa[ru] = rv;
-            cout << "Yes" << "\n";
-            continue;
-        }
-        if(!visited[v]) {
-            visited[v] = true;
-            pa[rv] = ru;
-            cout << "Yes" << "\n";
-            continue;
-        }
         if(!visited[ru]) {
             visited[ru] = true;
             pa[ru] = rv;
