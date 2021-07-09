@@ -156,7 +156,7 @@ void solve() {
     for(int i = 0; i < Time.size() - 1; i++) {
         merge(Time[i].u, Time[i].v);
         if(Time[i].Time == Time[i + 1].Time)
-            continue; 
+            continue;
         revert();
     }
     cout << ans << "\n";
