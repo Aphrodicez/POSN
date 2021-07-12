@@ -76,23 +76,32 @@ void solve() {
         int CtoA = dp[mapp['C']][mapp['A']][r] - dp[mapp['C']][mapp['A']][l - 1];
         int CtoT = dp[mapp['C']][mapp['T']][r] - dp[mapp['C']][mapp['T']][l - 1];
         
-        int A = 0, C = 0, T = 0;
+        int A = AtoC + AtoT;
+        int T = TtoA + TtoC;
+        int C = CtoA + CtoT;
+        int Abelow = CtoA + TtoA;
+        int Tbelow = AtoT + CtoT;
+        int Cbelow = AtoC + TtoC;
 
+        if(A != Abelow || T != Tbelow || C != Cbelow) {
+            cout << -1 << "\n";
+            continue;
+        }
+        
         cnt = min(AtoT, TtoA);
         ans += cnt;
-        A += max(0, AtoT - TtoA);
-        T += max(0, TtoA - AtoT);
+        A -= cnt;
+        T -= cnt;
 
         cnt = min(AtoC, CtoA);
         ans += cnt;
-        A += max(0, AtoC - CtoA);
-        C += max(0, CtoA - AtoC);
+        A -= cnt;
+        C -= cnt;
 
         cnt = min(TtoC, CtoT);
         ans += cnt;
-
-        T += max(0, TtoC - CtoT);
-        C += max(0, CtoT - TtoC);
+        T -= cnt;
+        C -= cnt;
 
         if(A != T || A != C) {
             cout << -1 << "\n";
