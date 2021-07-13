@@ -122,4 +122,7 @@ void setIO() {
 /*
 5
 ATATA
+
+4
+ATTA
 */
