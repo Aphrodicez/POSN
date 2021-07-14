@@ -53,9 +53,9 @@ void solve() {
     for(int i = 1; i <= n; i++) {
         int num;
         cin >> num;
-        for(int swapCnt = min(i, K); swapCnt >= 1; swapCnt--) {
-            for(int w = i - swapCnt; w <= L; w++) {
-                dp[swapCnt][w] = max(dp[swapCnt][w], dp[swapCnt - 1][w - (i - swapCnt)] + num);
+        for(int toIndex = min(i, K); toIndex >= 1; toIndex--) {
+            for(int w = i - toIndex; w <= L; w++) {
+                dp[toIndex][w] = max(dp[toIndex][w], dp[toIndex - 1][w - (i - toIndex)] + num);
             }
         }
     }

@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Sweepline + Binary Search + Inversion Count [Fenwick Tree]
+    Algo	: Sweepline + Inversion Count [Fenwick Tree]
     Status	: Accepted
 */
 
