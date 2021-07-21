@@ -58,36 +58,37 @@ int n;
 
 void dfsSumSubTree(int u, int p) {
     dp[u] = 1;
+    priority_queue <GRAPH> pq;
+    pq.push({0, 0});
     for(int x : g[u]) {
         if(x == p)
             continue;
         dfsSumSubTree(x, u);
         dp[u] += dp[x];
-        if(dp[x] >= FirstSubTree[u].val) {
-            swap(FirstSubTree[u], SecondSubTree[u]);
-            FirstSubTree[u].idx = x;
-            FirstSubTree[u].val = dp[x];
-        }
-        else if(dp[x] > SecondSubTree[u].val) {
-            SecondSubTree[u].idx = x;
-            SecondSubTree[u].val = dp[x];
-        }
+        pq.push({x, dp[x]});
+        if(pq.size() > 2)
+            pq.pop();
     }
+    SecondSubTree[u] = pq.top();
+    pq.pop();
+    FirstSubTree[u] = pq.top();
+    pq.pop();
 }
 
 void dfsByPass(int u, int p) {
+    priority_queue <GRAPH> pq;
     if(u != p) {
         dp[p] = n - dp[u];
-        if(dp[p] >= FirstSubTree[u].val) {
-            swap(FirstSubTree[u], SecondSubTree[u]);
-            FirstSubTree[u].idx = p;
-            FirstSubTree[u].val = dp[p];
-        }
-        else if(dp[p] > SecondSubTree[u].val) {
-            SecondSubTree[u].idx = p;
-            SecondSubTree[u].val = dp[p];
-        }
+        pq.push({p, dp[p]});
     }
+    pq.push(FirstSubTree[u]);
+    pq.push(SecondSubTree[u]);
+    if(pq.size() > 2)
+        pq.pop();
+    SecondSubTree[u] = pq.top();
+    pq.pop();
+    FirstSubTree[u] = pq.top();
+    pq.pop();
     for(int x : g[u]) {
         if(x == p)
             continue;
