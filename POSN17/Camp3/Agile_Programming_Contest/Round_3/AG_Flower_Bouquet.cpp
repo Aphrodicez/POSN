@@ -73,7 +73,7 @@ void BinarySearchGroup(int sz) {
         int mid = l + (r - l + 1) / 2;
         if(!ans[mid])
             grouping(mid);
-        if(ans[mid] == ans[l])
+        if(ans[mid] == ans[sz])
             l = mid;
         else
             r = mid - 1;
