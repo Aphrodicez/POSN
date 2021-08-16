@@ -73,9 +73,7 @@ void solve() {
         if(parent == child)
             continue;
         if(a[rv] > a[ru])
-            swap(parent, child);        
-        if(a[child] == mx)
-            continue;
+            swap(parent, child);
         p[child] = parent;
         mapp[a[child]]--;
         if(!mapp[a[child]])
@@ -112,4 +110,15 @@ void setIO() {
 3
 7
 4
+
+3 3 4
+1 2 3
+1 2
+2 3
+1 3
+1
+2
+3
+4
+
 */
