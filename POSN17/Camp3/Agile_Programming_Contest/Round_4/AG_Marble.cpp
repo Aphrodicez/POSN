@@ -42,7 +42,9 @@ void TESTCASE() {
     
 }
 
-int a[N], p[N], ans[M], cnt[M], sortedArr[N];
+int a[N], p[N], ans[M];
+
+map <int, int> mapp;
 
 int find_root(int u) {
     if(p[u] == u)
@@ -53,38 +55,32 @@ int find_root(int u) {
 void solve() {
     int n, k, q;
     cin >> n >> k >> q;
-    int mn = 1e9, mx = 0;
+    int mx = 0;
     for(int i = 1; i <= n; i++) {
         p[i] = i;
         cin >> a[i];
-        sortedArr[i] = a[i];
-        cnt[a[i]]++;
-        mn = min(mn, a[i]);
+        mapp[a[i]]++;
         mx = max(mx, a[i]);
     }
-    sort(sortedArr + 1, sortedArr + n + 1);
     int u, v;
-    int it = 1;
-    ans[0] = sortedArr[it];
+    ans[0] = mapp.begin()->first;
     for(int i = 1; i <= k; i++) {
         cin >> u >> v;
         int ru = find_root(u);
         int rv = find_root(v);
-        ans[i] = sortedArr[it];
-        if(ru == rv)
+        ans[i] = mapp.begin()->first;
+        int parent = ru, child = rv;
+        if(parent == child)
             continue;
-        if(a[ru] >= a[rv]) {
-            cnt[a[rv]]--;
-            p[rv] = ru;
-        }
-        else {
-            cnt[a[ru]]--;
-            p[ru] = rv;
-        }
-        while(it < n && !cnt[sortedArr[it]]) {
-            it++;
-        }
-        ans[i] = sortedArr[it];
+        if(a[rv] > a[ru])
+            swap(parent, child);        
+        if(a[child] == mx)
+            continue;
+        p[child] = parent;
+        mapp[a[child]]--;
+        if(!mapp[a[child]])
+            mapp.erase(a[child]);
+        ans[i] = mapp.begin()->first;
     }
     while(q--) {
         int idx;
