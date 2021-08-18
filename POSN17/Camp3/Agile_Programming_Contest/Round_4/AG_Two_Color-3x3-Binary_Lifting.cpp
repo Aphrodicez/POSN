@@ -86,22 +86,20 @@ void solve() {
         cin >> n;
         int k = 0;
         memcpy(ans, dp0, sizeof dp0);
-        while(n) {
-            if(n % 2) {
-                i64 tmp[3][3];
-                for(int i = 0; i < r1; i++) {
-                    for (int j = 0; j < c2; j++) {
-                        tmp[i][j] = 0;
-                        for(int x = 0; x < r1; x++) {
-                            tmp[i][j] += dp[k][i][x] * ans[x][j];
-                            tmp[i][j] %= MOD;
-                        }
+        for(int k = 0; k <= 60; k++) {
+            if(!(n & (1ll << k)))
+                continue;
+            i64 tmp[3][3];
+            for(int i = 0; i < r1; i++) {
+                for (int j = 0; j < c2; j++) {
+                    tmp[i][j] = 0;
+                    for(int x = 0; x < r1; x++) {
+                        tmp[i][j] += dp[k][i][x] * ans[x][j];
+                        tmp[i][j] %= MOD;
                     }
                 }
-                memcpy(ans, tmp, sizeof tmp);
             }
-            n /= 2;
-            k++;
+            memcpy(ans, tmp, sizeof tmp);
         }
         i64 sum = 0;
         for(int i = 0; i < 3; i++) {

@@ -98,7 +98,7 @@ void solve() {
                 }
                 memcpy(ans, tmp, sizeof tmp);
             }
-            n /= 2;
+            n >>= 1;
             k++;
         }
         i64 sum = 0;
