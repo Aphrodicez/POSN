@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Mergesort [Inversion Count] + Dynamic Programming [Quicksum]
+    Algo	: Fenwick Tree [Inversion Count]
     Status	: Accepted
     Created	: 21 August 2021 [01:32]
 */
@@ -38,67 +38,57 @@ struct A {
 
 const int N = 1e5 + 10;
 const int M = 2e5 + 10;
+const int TREE_SIZE = 3e5 + 10;
 
 void TESTCASE() {
     
 }
 
-i64 original[N], cnt[N], qs[N];
+i64 a[N], b[N], leftInversion[N], tree[TREE_SIZE];
 
-A a[N], b[N];
+unordered_map <i64, int> mapp;
 
-i64 ans = 0;
+i64 query(int idx) {
+    i64 sum = 0;
+    while(idx > 0) {
+        sum += tree[idx];
+        idx -= (idx & -idx);
+    }
+    return sum;
+}
 
-void mergeSort(int l, int r, int opr) {
-    if(l >= r)
-        return ;
-    int mid = l + (r - l) / 2;
-    mergeSort(l, mid, opr);
-    mergeSort(mid + 1, r, opr);
-    for(int i = l; i <= r; i++) 
-        qs[i] = qs[i - 1] + cnt[a[i].idx];
-    int i = l, j = mid + 1, k = l;
-    while(i <= mid && j <= r) {
-        if(a[i].val <= a[j].val) {
-            b[k] = a[i];
-            k++;
-            i++;
-        }
-        else {
-            b[k] = a[j];
-            if(opr == 2)
-                cnt[a[j].idx] += mid - i + 1;
-            else
-                ans += qs[mid] - qs[i - 1];
-            k++;
-            j++;
-        }
+void upd(int idx, i64 val) {
+    while(idx <= 300003) {
+        tree[idx] += val;
+        idx += (idx & -idx);
     }
-    while(i <= mid) {
-        b[k++] = a[i++];
-    }
-    while(j <= r) {
-        b[k++] = a[j++];
-    }
-    for(int i = l; i <= r; i++)
-        a[i] = b[i];
 }
 
 void solve() {
-    memset(cnt, 0, sizeof cnt);
-    ans = 0;
+    mapp.clear();
+    memset(leftInversion, 0, sizeof leftInversion);
+    memset(tree, 0, sizeof tree);
     int n;
-    cin >> n;
+    cin >> n;   
     for(int i = 1; i <= n; i++) {
-        cin >> original[i];
-        a[i] = {i, original[i]};
+        cin >> a[i];
+        b[i] = a[i];
     }
-    mergeSort(1, n, 2);
+    sort(b + 1, b + n + 1);
     for(int i = 1; i <= n; i++) {
-        a[i] = {i, original[i]};
-        qs[i] = qs[i - 1] + cnt[i];
+        mapp[b[i]] = i;
     }
-    mergeSort(1, n, 3);
+    for(int i = 1; i <= n; i++) {
+        a[i] = mapp[a[i]];
+        leftInversion[i] = query(n - a[i]);
+        upd(n + 1 - a[i], 1ll);
+    }
+    i64 ans = 0;
+    memset(tree, 0, sizeof tree);
+    for(int i = n; i >= 1; i--) {
+        ans += query(a[i] - 1) * leftInversion[i];
+        upd(a[i], 1ll);
+    }
     cout << ans << "\n";
 }
 
