@@ -38,7 +38,6 @@ void solve() {
         cin >> a[i];
     }
     while(q--) {
-        cin >> m;
         int idx;
         int it = 1;
         int ans = 0;
