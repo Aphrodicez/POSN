@@ -2,8 +2,8 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: 
-    Status	: 
+    Algo	: Inversion Count [ Fenwick Tree ]
+    Status	: Accepted
 */
 
 #include <bits/stdc++.h>

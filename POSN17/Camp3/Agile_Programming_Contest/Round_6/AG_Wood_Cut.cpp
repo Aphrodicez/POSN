@@ -2,8 +2,8 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: 
-    Status	: 
+    Algo	: Math + Dynamic Programming
+    Status	: Accepted
 */
 
 #include <bits/stdc++.h>

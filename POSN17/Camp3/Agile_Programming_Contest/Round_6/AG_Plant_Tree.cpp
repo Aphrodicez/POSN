@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: 
+    Algo	: Dynamic Programming [ Ad - Hoc ]
     Status	: Accepted
 */
 

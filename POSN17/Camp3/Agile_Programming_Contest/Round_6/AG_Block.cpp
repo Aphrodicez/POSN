@@ -2,8 +2,8 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: 
-    Status	: 
+    Algo	: Fenwick Tree [ Range Update Point Query ]
+    Status	: Accepted
 */
 
 #include <bits/stdc++.h>
