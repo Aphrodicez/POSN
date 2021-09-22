@@ -11,7 +11,7 @@ double frand(double l, double r){
 
 int ans[100010];
 
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[]){   
     int caseNumber = atoi(argv[1]);
     srand(caseNumber);
     int q = rand(1, 15);
