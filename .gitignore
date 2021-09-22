@@ -31,6 +31,10 @@
 *.out
 *.app
 
+# Grader
+grader.sh
+gen.py
+
 # Else
 .vscode
 0.cpp
