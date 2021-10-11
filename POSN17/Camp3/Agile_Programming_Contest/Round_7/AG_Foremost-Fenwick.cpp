@@ -68,8 +68,6 @@ long long a[MaxN], sorted[MaxN], realVal[MaxN];
 
 unordered_map <long long, long long> mp;
 
-vector <long long> median;
-
 int low_b(int lb, int rb, long long val) {
     while(lb < rb) {
         int midb = lb + (rb - lb) / 2;
@@ -95,9 +93,6 @@ void solve() {
             realVal[cnt] = sorted[i];
         }
     }
-    median.push_back(k / 2 + 1);
-    if(k % 2 == 0)
-        median.push_back(k / 2);
 
     for(int i = 1; i <= k - 1; i++) {
         upd(mp[a[i]], 1, 0);
@@ -111,13 +106,11 @@ void solve() {
         upd(mp[a[i]], 1, 0);
         upd(mp[a[i]], a[i], 1);
         long long mn = 1e18;
-        for(long long x : median) {
-            int idx = low_b(1, n, x);
-            long long lef = (realVal[idx] * query(idx - 1, 0)) - query(idx - 1, 1);
-            long long rig = query(n, 1) - query(idx, 1) - (realVal[idx] * (k - query(idx, 0)));
-            mn = min(mn, lef + rig);
-        }
-        cout << mn << " ";
+        int idx = low_b(1, n, (k + 1) / 2);
+        long long lef = (realVal[idx] * query(idx - 1, 0)) - query(idx - 1, 1);
+        long long rig = query(n, 1) - query(idx, 1) - (realVal[idx] * (k - query(idx, 0)));
+        cout << lef + rig << " ";
+        mn = min(mn, lef + rig);
     }
 }
 
@@ -139,4 +132,7 @@ void setIO() {
 /*
 8 3
 2 4 3 5 8 1 2 1
+
+4 4
+1 5 10 11
 */
