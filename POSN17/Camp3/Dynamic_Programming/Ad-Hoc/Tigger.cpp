@@ -4,7 +4,6 @@
     Lang	: CPP
     Algo	: Dynamic Programming [Ad - Hoc]
     Status	: Accepted
-    Created	: 24 August 2021 [23:53]
 */
 
 #include <bits/stdc++.h>

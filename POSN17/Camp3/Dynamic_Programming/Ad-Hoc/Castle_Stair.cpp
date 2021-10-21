@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Two Pointer + Binary Search + Dynamic Programming [ Ad - Hoc ]
+    Algo	: Two Pointer + Binary Search + Dynamic Programming [Ad - Hoc]
     Status	: Accepted
 */
 

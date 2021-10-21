@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Interval Scheduling
+    Algo	: Dynamic Programming [ Interval Scheduling ]
     Status	: Accepted
 */
 

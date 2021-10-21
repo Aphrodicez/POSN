@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Dynamic Programming [ Knapsack ]
+    Algo	: Bitmasking
     Status	: Accepted
 */
 

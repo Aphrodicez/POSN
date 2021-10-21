@@ -2,7 +2,7 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Quicksum
+    Algo	: Dynamic Programming [ Quicksum ]
     Status	: Accepted
 */
 
