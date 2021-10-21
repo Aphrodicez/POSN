@@ -45,14 +45,13 @@ struct BUCKET {
     }
 };
 
-int need[310], all[310];
+int need[310];
 
 vector <int> g[310];
 
 void dfs(int u, int p) {
     for(int x : g[u]) {
         dfs(x, u);
-        all[u] += all[x];
         need[u] += need[x];
     }
 }
@@ -77,7 +76,6 @@ void solve() {
     vector <BUCKET> eventPoint;
     for(int i = 1; i <= n; i++) {
         g[i].clear();
-        all[i] = 1;
         int l, r;
         scanf("%d %d", &l, &r);
         eventPoint.push_back({l, i});
