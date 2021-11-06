@@ -66,6 +66,8 @@ void solve() {
             bit[j]--;
         }
         ans += sum * sum;
+        if(!sum)
+            break;
     }
     cout << ans << "\n";
 }
