@@ -44,8 +44,7 @@ void TESTCASE() {
 }
 
 int dp[MaxN];
-int contain[MaxN][MaxK];
-int sum[MaxK];
+long long contain[MaxN];
 vector <int> g[MaxN];
 
 void dfs(int u, int p) {
@@ -85,26 +84,19 @@ void solve() {
         int val;
         for(int j = 1; j <= cnt; j++) {
             cin >> val;
-            contain[i][dp[val]]++;
+            contain[i] += (1ll << dp[val]);
         }
     }
     while(q--) {
-        memset(sum, 0, sizeof sum);
         int cnt;
         cin >> cnt;
         int u;
+        long long ans = 0;
         for(int i = 1; i <= cnt; i++) {
             cin >> u;
-            for(int j = 0; j <= k; j++) {
-                sum[j] += contain[u][j];
-            }
+            ans += contain[u];
         }
-        int ans = 0;
-        for(ans = 0; ans < mx && (sum[ans] % 2 == 0); ans++) {
-            sum[ans + 1] += sum[ans] / 2;
-            sum[ans] %= 2;
-        }
-        cout << ans << "\n";
+        cout << min(k - 1, __builtin_ctzll(ans)) << "\n";
     }
 }
 
