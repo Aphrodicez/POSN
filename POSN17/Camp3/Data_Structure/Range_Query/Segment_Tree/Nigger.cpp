@@ -9,20 +9,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define x first
-#define y second
-#define pb push_back
-#define eb emplace_back
 #define all(a) (a).begin(), (a).end()
-#define SZ(a) (int)(a).size()
+#define sz(a) (int)(a).size()
 #define pc(x) putchar(x)
-#define MP make_pair
 #define dec(x) fixed << setprecision(x)
-#define v(a) vector <a>
-#define p(a, b) pair <a, b>
-#define heap(a) priority_queue <a>
-
-using i64 = long long;
 
 void setIO();
 
@@ -32,45 +22,46 @@ const int d8i[] = {-1, -1, 0, 1, 1, 1, 0, -1};
 const int d8j[] = {0, 1, 1, 1, 0, -1, -1, -1};
 
 const int MaxN = 1e5 + 10;
-const int MaxM = 2e5 + 10;
+
+const int INF = 1e9 + 10;
+const int MOD = 1e9 + 7;
 
 int n;
 
-bitset <4 * MaxN> lazy;
-
-struct LAZY_SEGMENT {
+struct SEGMENT_TREE {
     int tree[4 * MaxN];
+    bool lazy[4 * MaxN];
+
     void update(int now, int ql, int qr, int l = 1, int r = n) {
         if(lazy[now]) {
-            lazy[2 * now] = 1 - lazy[2 * now];
-            lazy[2 * now + 1] = 1 - lazy[2 * now + 1];
-            lazy[now] = 0;
+            lazy[now * 2] ^= 1;
+            lazy[now * 2 + 1] ^= 1;
+            lazy[now] = false;
             tree[now] = (r - l + 1) - tree[now];
         }
-        if(r < ql || qr < l) {
-            return;
-        }
+        if(qr < l || r < ql)
+            return ;
         if(ql <= l && r <= qr) {
+            lazy[now * 2] ^= 1;
+            lazy[now * 2 + 1] ^= 1;
             tree[now] = (r - l + 1) - tree[now];
-            lazy[2 * now] = 1 - lazy[2 * now];
-            lazy[2 * now + 1] = 1 - lazy[2 * now + 1];
-            return;
+            return ;
         }
         int mid = l + (r - l) / 2;
         update(now * 2, ql, qr, l, mid);
         update(now * 2 + 1, ql, qr, mid + 1, r);
         tree[now] = tree[now * 2] + tree[now * 2 + 1];
     }
+
     int query(int now, int ql, int qr, int l = 1, int r = n) {
         if(lazy[now]) {
-            lazy[2 * now] = 1 - lazy[2 * now];
-            lazy[2 * now + 1] = 1 - lazy[2 * now + 1];
-            lazy[now] = 0;
+            lazy[now * 2] ^= 1;
+            lazy[now * 2 + 1] ^= 1;
+            lazy[now] = false;
             tree[now] = (r - l + 1) - tree[now];
         }
-        if(r < ql || qr < l) {
+        if(qr < l || r < ql)
             return 0;
-        }
         if(ql <= l && r <= qr) {
             return tree[now];
         }
@@ -79,26 +70,24 @@ struct LAZY_SEGMENT {
     }
 };
 
-LAZY_SEGMENT lazy_segment;
-
-void TESTCASE() {
-    
-}
+SEGMENT_TREE segment_tree;
 
 void solve() {
-    int q;
-    cin >> n >> q;
-    while(q--) {
+    int m;
+    cin >> n >> m;
+    while(m--) {
         bool opr;
         cin >> opr;
-        int l, r;
-        cin >> l >> r;
         if(!opr) {
-            lazy_segment.update(1, l, r);
+            int l, r;
+            cin >> l >> r;
+            segment_tree.update(1, l, r);
             continue;
         }
         if(opr) {
-            cout << lazy_segment.query(1, l, r) << "\n";
+            int l, r;
+            cin >> l >> r;
+            cout << segment_tree.query(1, l, r) << "\n";
         }
     }
 }
