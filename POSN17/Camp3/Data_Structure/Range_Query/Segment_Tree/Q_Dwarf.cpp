@@ -2,27 +2,17 @@
     Author	: ~Aphrodicez
     School	: RYW
     Lang	: CPP
-    Algo	: Segment Tree [ Minimum - Maximum Range Query ] + Bucket Sort
+    Algo	: Segment Tree [ Range Minimum + Maximum Query ] + Bucket Sort
     Status	: Accepted
 */
 
 #include <bits/stdc++.h>
 using namespace std;
 
-#define x first
-#define y second
-#define pb push_back
-#define eb emplace_back
 #define all(a) (a).begin(), (a).end()
-#define SZ(a) (int)(a).size()
+#define sz(a) (int)(a).size()
 #define pc(x) putchar(x)
-#define MP make_pair
 #define dec(x) fixed << setprecision(x)
-#define v(a) vector <a>
-#define p(a, b) pair <a, b>
-#define heap(a) priority_queue <a>
-
-using i64 = long long;
 
 void setIO();
 
@@ -32,85 +22,89 @@ const int d8i[] = {-1, -1, 0, 1, 1, 1, 0, -1};
 const int d8j[] = {0, 1, 1, 1, 0, -1, -1, -1};
 
 const int MaxN = 2e5 + 10;
-const int MaxM = 2e5 + 10;
 
 const int INF = 1e9 + 10;
+const int MOD = 1e9 + 7;
 
+int n;
 int a[MaxN];
 int pos[MaxN];
-int n;
+
+struct NODE {
+    int mn, mx;
+};
 
 struct SEGMENT_TREE {
-    pair <int, int> tree[4 * MaxN];
+    NODE tree[4 * MaxN];
+
     void build(int now, int l = 1, int r = n) {
         if(l == r) {
-            tree[now] = make_pair(pos[l], pos[l]);
-            return;
+            tree[now] = {pos[l], pos[l]};
+            return ;
         }
         int mid = l + (r - l) / 2;
         build(now * 2, l, mid);
         build(now * 2 + 1, mid + 1, r);
-        pair <int, int> subl = tree[now * 2];
-        pair <int, int> subr = tree[now * 2 + 1];
-        tree[now] = make_pair(min(subl.first, subr.first), max(subl.second, subr.second));
+        tree[now] = {min(tree[now * 2].mn, tree[now * 2 + 1].mn), max(tree[now * 2].mx, tree[now * 2 + 1].mx)};
     }
+
     void update(int now, int idx, int val, int l = 1, int r = n) {
-        if(l > idx || r < idx) {
+        if(r < idx || idx < l)
             return ;
-        }
         if(l == r) {
-            tree[now] = make_pair(val, val);
+            tree[now] = {val, val};
             return ;
         }
         int mid = l + (r - l) / 2;
         update(now * 2, idx, val, l, mid);
         update(now * 2 + 1, idx, val, mid + 1, r);
-        pair <int, int> subl = tree[now * 2];
-        pair <int, int> subr = tree[now * 2 + 1];
-        tree[now] = make_pair(min(subl.first, subr.first), max(subl.second, subr.second));
-        return ;
+        tree[now] = {min(tree[now * 2].mn, tree[now * 2 + 1].mn), max(tree[now * 2].mx, tree[now * 2 + 1].mx)};
     }
-    pair <int, int> query(int now, int ql, int qr, int l = 1, int r = n) {
-        if(r < ql || qr < l) {
-            return make_pair(INF, -INF);
-        }
+
+    NODE query(int now, int ql, int qr, int l = 1, int r = n) {
+        if(r < ql || qr < l)
+            return {INF, -INF};
         if(ql <= l && r <= qr) {
             return tree[now];
         }
         int mid = l + (r - l) / 2;
-        pair <int, int> subl = query(now * 2, ql, qr, l, mid);
-        pair <int, int> subr = query(now * 2 + 1, ql, qr, mid + 1, r);
-        return make_pair(min(subl.first, subr.first), max(subl.second, subr.second));
+        NODE subl = query(now * 2, ql, qr, l, mid);
+        NODE subr = query(now * 2 + 1, ql, qr, mid + 1, r);
+        return {min(subl.mn, subr.mn), max(subl.mx, subr.mx)};
     }
 };
 
 SEGMENT_TREE segment_tree;
 
 void solve() {
-    int q;
-    cin >> n >> q;
+    int m;
+    cin >> n >> m;
     for(int i = 1; i <= n; i++) {
         cin >> a[i];
         pos[a[i]] = i;
     }
-    segment_tree.build(1, 1, n);
-    while(q--) {
+    segment_tree.build(1);
+    while(m--) {
         int opr;
         cin >> opr;
-        int l, r;
         if(opr == 1) {
+            int l, r;
             cin >> l >> r;
             segment_tree.update(1, a[l], r);
             segment_tree.update(1, a[r], l);
             swap(a[l], a[r]);
+            continue;
         }
         if(opr == 2) {
+            int l, r;
             cin >> l >> r;
-            pair <int, int> res = segment_tree.query(1, l, r);
-            if((res.second - res.first + 1) == (r - l + 1))
+            NODE res = segment_tree.query(1, l, r);
+            if((res.mx - res.mn + 1) == (r - l + 1)) {
                 cout << "YES" << "\n";
-            else
+            }
+            else {
                 cout << "NO" << "\n";
+            }
         }
     }
 }
