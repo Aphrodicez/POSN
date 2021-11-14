@@ -66,7 +66,6 @@ void solve() {
 }
 
 int main() {
-    setIO();
     int q = 1;
     
     for(int i = 1; i <= q; i++) {
