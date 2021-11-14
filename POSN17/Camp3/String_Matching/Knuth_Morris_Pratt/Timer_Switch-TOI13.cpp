@@ -91,7 +91,4 @@ void setIO() {
 
 5
 10000
-
-7
-ababaca
 */
