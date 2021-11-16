@@ -71,7 +71,7 @@ void flip(int l, int r, int idx) {
     l = max(l, 1);
     r = min(r, m);
     int now = 0;
-    for(int i = l; i <= l + sz - 1; i++) {
+    for(int i = l; i <= r && i <= l + sz - 1; i++) {
         now = (now << 1) | (text[i] - '0');
     }
     for(int i = l; i + sz - 1 <= r; i++) {
@@ -89,8 +89,8 @@ void solve() {
     for(int i = 1; i <= n; i++) {
         scanf(" %s", (s + 1));
         int pattern = 0;
-        for(int i = 1; i <= sz; i++) {
-            pattern = (pattern << 1) | (s[i] - '0');
+        for(int j = 1; j <= sz; j++) {
+            pattern = (pattern << 1) | (s[j] - '0');
         }
         mp.insert(i, pattern);
     }
