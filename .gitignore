@@ -38,3 +38,5 @@ gen.py
 # Else
 .vscode
 0.cpp
+brute.cpp
+WA-*
