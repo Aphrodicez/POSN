@@ -34,6 +34,21 @@ string s;
 vector <string> num[10];
 map <vector <string>, long long> mp;
 
+long long eval(int len) {
+    for(int k = 0; k < 3; k++) {
+        getline(cin, s);
+        for(int i = 0; i <= len - 1; i++) {
+            num[i].push_back(s.substr(i * 4, 3));
+        }
+    }
+    long long sum = 0;
+    for(int i = 0; i <= len - 1; i++) {
+        sum = sum * 10 + mp[num[i]];
+        num[i].clear();
+    }
+    return sum;
+}
+
 void solve() {    
     mp[{"   ", "  |", "  |"}] = 1;
     mp[{" _ ", " _|", "|_ "}] = 2;
@@ -48,29 +63,9 @@ void solve() {
     int n, m;
     cin >> n >> m;
     getline(cin, s);
-    for(int k = 0; k < 3; k++) {
-        getline(cin, s);
-        for(int i = 0; i <= n - 1; i++) {
-            num[i].push_back(s.substr(i * 4, 3));
-        }
-    }
-    long long a = 0;
-    for(int i = 0; i <= n - 1; i++) {
-        a = a * 10 + mp[num[i]];
-        num[i].clear();
-    }
-
-    for(int k = 0; k < 3; k++) {
-        getline(cin, s);
-        for(int i = 0; i <= m - 1; i++) {
-            num[i].push_back(s.substr(i * 4, 3));
-        }
-    }
-    long long b = 0;
-    for(int i = 0; i <= m - 1; i++) {
-        b = b * 10 + mp[num[i]];
-    }
-    cout << a + b;
+    long long a = eval(n);
+    long long b = eval(m);
+    cout << a + b << "\n";
 }
 
 int main() {
