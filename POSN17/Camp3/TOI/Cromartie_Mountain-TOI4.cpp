@@ -35,16 +35,15 @@ int l[MaxN], h[MaxN];
 bitset <110> markv;
 
 void drawhill(int i, int j, int h, int dir, char tmp) {
-    if(!h)
-        return ;
-    bool chv = false;
-    chv |= (tmp == '/' && a[i][j] == '\\');
-    chv |= (a[i][j] == '/' && tmp == '\\');
-    if(chv)
-        a[i][j] = 'v';
-    else
-        a[i][j] = tmp;
-    drawhill(i - 1, j + dir, h - 1, dir, tmp);
+    for(; h; i--, j += dir, h--) {
+        bool chv = false;
+        chv |= (tmp == '/' && a[i][j] == '\\');
+        chv |= (a[i][j] == '/' && tmp == '\\');
+        if(chv)
+            a[i][j] = 'v';
+        else
+            a[i][j] = tmp;
+    }
 }
 
 void solve() {
