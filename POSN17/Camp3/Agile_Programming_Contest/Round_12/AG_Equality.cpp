@@ -44,7 +44,7 @@ void solve() {
         return ;
     }
     sort(sorted + 1, sorted + 1 + n);
-    int lb = 2, rb = n;
+    int lb = 1, rb = n;
     while(lb < rb) {
         int mid = lb + (rb - lb) / 2;
         int last = -1e9;
