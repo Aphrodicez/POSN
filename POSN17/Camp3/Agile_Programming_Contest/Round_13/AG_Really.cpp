@@ -53,9 +53,9 @@ void solve() {
         idx[a[i] % n] = i;
     }
     long long ans = 0;
+    k--;
     if(a[1] != 1) {
         ans += move(a[1], 1);
-        k--;
     }
     for(int i = 1; i <= n; i++) {
         qs[i] = qs[i - 1] + move(mod(i), mod(i + 1));
@@ -90,4 +90,7 @@ void setIO() {
 2
 1
 4
+
+1 81
+1
 */
