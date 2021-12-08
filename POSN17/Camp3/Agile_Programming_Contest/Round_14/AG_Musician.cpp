@@ -35,27 +35,27 @@ int dp[MaxN][MaxN];
 
 void solve() {
     memset(dp, 0, sizeof (dp));
-    int n, l;
-    scanf("%d %d", &n, &l);
+    int n, k;
+    scanf("%d %d", &n, &k);
     for(int i = 1; i <= n; i++) {
         scanf("%d", &a[i]);
     }
-    for(int i = 1; i <= l - 1; i++) {
+    for(int i = 1; i <= k - 1; i++) {
         dp[i][0] = a[i];
     }
     for(int i = 1; i <= n; i++) {
-        if(i < l)
+        if(i < k)
             dp[i][0] = a[i];
-        for(int j = max(1, i - l + 1); j <= i - 1; j++) {
-            dp[i][j] = dp[j][max(0, i - l)] + a[i];
+        for(int j = max(1, i - k + 1); j <= i - 1; j++) {
+            dp[i][j] = dp[j][max(0, i - k)] + a[i];
         }
-        for(int j = i - 2; j >= max(0, i - l + 1); j--) {
+        for(int j = i - 2; j >= max(0, i - k + 1); j--) {
             dp[i][j] = min(dp[i][j], dp[i][j + 1]);
         }
     }
     int ans = 1e9;
-    for(int i = n - l + 2; i <= n; i++) {
-        ans = min(ans, dp[i][n - l + 1]);
+    for(int i = n - k + 2; i <= n; i++) {
+        ans = min(ans, dp[i][n - k + 1]);
     }
     printf("%d\n", ans);
 }
