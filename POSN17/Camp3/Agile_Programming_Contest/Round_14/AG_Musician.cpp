@@ -40,9 +40,6 @@ void solve() {
     for(int i = 1; i <= n; i++) {
         scanf("%d", &a[i]);
     }
-    for(int i = 1; i <= k - 1; i++) {
-        dp[i][0] = a[i];
-    }
     for(int i = 1; i <= n; i++) {
         if(i < k)
             dp[i][0] = a[i];
