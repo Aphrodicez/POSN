@@ -60,6 +60,8 @@ void solve() {
             continue;
         for(auto x : adj[u]) {
             int nextw = w + x.w;
+            if(dis[0][x.u] == nextw)
+                continue;
             if(dis[0][x.u] > nextw) {
                 swap(dis[0][x.u], dis[1][x.u]);
                 dis[0][x.u] = nextw;
@@ -94,4 +96,12 @@ void setIO() {
 1 2 1
 1 2 2
 2 3 1
+
+4 5
+1 2
+1 2 4
+1 3 1
+3 2 3
+1 4 2
+4 2 3
 */
