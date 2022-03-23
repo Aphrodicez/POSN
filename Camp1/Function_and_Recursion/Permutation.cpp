@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int mark[20], ans[20];
 
@@ -18,12 +19,12 @@ void permu(int state) {
         return ;
     }
     for(int i = 1; i <= n; i++) {
-        if(mark[i])
-            continue;
-        mark[i] = 1;
-        ans[state] = i;
-        permu(state + 1);
-        mark[i] = 0;
+        if(!mark[i]) {
+            mark[i] = 1;
+            ans[state] = i;
+            permu(state + 1);
+            mark[i] = 0;
+        }
     }
 }
 
