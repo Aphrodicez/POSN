@@ -13,16 +13,17 @@ const int MaxN = 1e4 + 10;
 
 char s[MaxN];
 
-stack <int> stackOperand, stackOperator;
+stack <int> stOperand, stOperator;
 
 void solve() {
-    int a = stackOperand.top();
-    stackOperand.pop();
-    int b = stackOperand.top();
-    stackOperand.pop();
-    int val = (a + b) * (100 + (1 << (stackOperator.top() + 1))) / 100;
-    stackOperator.pop();
-    stackOperand.push(val);
+    int opr = stOperator.top();
+    stOperator.pop();
+    int b = stOperand.top();
+    stOperand.pop();
+    int a = stOperand.top();
+    stOperand.pop();
+    int val = (a + b) * ((100 + (1 << (opr + 1)))) / 100;
+    stOperand.push(val);
 }
 
 int main() {
@@ -30,32 +31,31 @@ int main() {
     int len = strlen(s);
     for(int i = 0; i < len; i++) {
         if(isalpha(s[i])) {
-            stackOperand.push(20);
+            stOperand.push(20);
             continue;
         }
         if(s[i] == '[') {
-            stackOperator.push(-1);
+            stOperator.push(-1);
             continue;
         }
         if(isdigit(s[i])) {
-            while(!stackOperator.empty() && stackOperator.top() != -1 && (s[i] - '0') < stackOperator.top()) {
+            while(!stOperator.empty() && stOperator.top() != -1 && (s[i] - '0') <= stOperator.top()) {
                 solve();
             }
-            stackOperator.push(s[i] - '0');
-            continue;;
+            stOperator.push(s[i] - '0');
+            continue;
         }
         if(s[i] == ']') {
-            while(!stackOperator.empty() && stackOperator.top() != -1) {
+            while(!stOperator.empty() && stOperator.top() != -1) {
                 solve();
-                continue;
             }
-            stackOperator.pop();
+            stOperator.pop();
         }
     }
-    while(!stackOperator.empty()) {
+    while(!stOperator.empty()) {
         solve();
     }
-    printf("%d\n", stackOperand.top());
+    printf("%d\n", stOperand.top());
     return 0;
 }
 
