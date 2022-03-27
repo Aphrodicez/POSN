@@ -54,8 +54,10 @@ int main(){
 /*
 NNEESW
 2
+
 NE
 2
+
 NWSSSSE
 1
 */
