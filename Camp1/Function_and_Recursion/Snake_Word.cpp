@@ -1,3 +1,11 @@
+/*
+    Author	: ~Aphrodicez
+    Center	: BUU
+    Lang	: CPP
+    Algo	: Recursion + Backtracking
+    Status	: Accepted
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
