@@ -1,3 +1,11 @@
+/*
+    Author	: ~Aphrodicez
+    Center	: BUU
+    Lang	: CPP
+    Algo	: Brute Force + Math
+    Status	: Accepted
+*/
+
 #include <stdio.h>
 
 int main() {
